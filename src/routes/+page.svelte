@@ -2,15 +2,19 @@
 	import { effectMagnetic } from '../lib/actions/effect-magnetic.js';
 	import { effectRipple } from '../lib/actions/effect-ripple.js';
 	import Button from '../lib/components/atoms/button/button.svelte';
+	import Checkbox from '../lib/components/atoms/checkbox/checkbox.svelte';
+	import type { CheckboxState } from '../lib/components/atoms/checkbox/checkbox.js';
 	import Switch from '../lib/components/atoms/switch/switch.svelte';
 
 	const variants = ['primary', 'secondary', 'destructive'] as const;
 	const sizes = ['sm', 'md', 'lg'] as const;
 	const radii = ['none', 'sm', 'md', 'lg', 'pill'] as const;
 	const switchSizes = ['sm', 'md', 'lg'] as const;
+	const checkboxSizes = ['sm', 'md', 'lg'] as const;
 
 	let notifications = $state(true);
 	let sounds = $state(false);
+	let termsState: CheckboxState = $state('checked');
 </script>
 
 <svelte:head>
@@ -158,7 +162,7 @@
 			</div>
 		</section>
 
-		<section class="border-y border-secondary-border py-12 sm:py-16">
+		<section class="border-t border-secondary-border py-12 sm:py-16">
 			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
 				<div>
 					<p class="m-0 text-xs tracking-widest text-secondary uppercase">08</p>
@@ -210,9 +214,41 @@
 			</div>
 		</section>
 
+		<section class="border-y border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">09</p>
+					<h2 class="mt-3 text-lg font-medium">Checkbox</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Native form control with polished visual states.
+					</p>
+				</div>
+				<div class="grid gap-10">
+					<div class="grid gap-5 sm:grid-cols-[8rem_1fr] sm:items-center">
+						<code class="text-xs text-secondary">sizes</code>
+						<div class="flex flex-wrap items-center gap-6">
+							{#each checkboxSizes as size (size)}
+								<Checkbox {size} state="checked">{size.toUpperCase()}</Checkbox>
+							{/each}
+						</div>
+					</div>
+					<div class="grid gap-5 sm:grid-cols-[8rem_1fr] sm:items-start">
+						<code class="pt-1 text-xs text-secondary">states</code>
+						<div class="grid max-w-md gap-5">
+							<Checkbox bind:state={termsState}>Interactive checkbox</Checkbox>
+							<Checkbox state="checked">Checked</Checkbox>
+							<Checkbox state="indeterminate">Indeterminate</Checkbox>
+							<Checkbox state="unchecked">Unchecked</Checkbox>
+							<Checkbox state="checked" disabled>Checked and disabled</Checkbox>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<footer class="flex flex-wrap items-center justify-between gap-4 pt-8 text-xs text-secondary">
 			<p class="m-0">Minimality UI / Atoms</p>
-			<code>button.svelte</code>
+			<code>atoms / button · switch · checkbox</code>
 		</footer>
 	</div>
 </main>
