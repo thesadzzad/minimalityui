@@ -1,0 +1,40 @@
+/* src/lib/styles/theme.css */
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 240 10% 4%;
+
+		--primary: 240 10% 4%;
+		--primary-hover: 240 6% 12%;
+		--primary-foreground: 0 0% 100%;
+		--primary-subtle: 240 5% 92%;
+		--primary-subtle-hover: 240 5% 86%;
+		--primary-border: 240 5% 65%;
+
+		--secondary: 240 5% 34%;
+		--secondary-hover: 240 5% 42%;
+		--secondary-foreground: 0 0% 100%;
+		--secondary-subtle: 240 5% 94%;
+		--secondary-subtle-hover: 240 5% 88%;
+		--secondary-border: 240 4% 72%;
+	}
+
+	[data-theme='dark'] {
+		--background: 240 10% 4%;
+		--foreground: 0 0% 98%;
+
+		--primary: 0 0% 100%;
+		--primary-hover: 240 5% 90%;
+		--primary-foreground: 240 10% 4%;
+		--primary-subtle: 240 5% 16%;
+		--primary-subtle-hover: 240 4% 22%;
+		--primary-border: 240 5% 65%;
+
+		--secondary: 240 4% 34%;
+		--secondary-hover: 240 5% 42%;
+		--secondary-foreground: 0 0% 100%;
+		--secondary-subtle: 240 6% 10%;
+		--secondary-subtle-hover: 240 5% 16%;
+		--secondary-border: 240 4% 34%;
+	}
+}
