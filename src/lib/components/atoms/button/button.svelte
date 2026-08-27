@@ -8,7 +8,7 @@
 		type ButtonSize,
 		type ButtonVariant
 	} from './button.js';
-	import { effectRipple } from '../../../actions/effect-ripple.js';
+
 	import { cn } from '../../../utils/cn.js';
 
 	interface Props extends HTMLButtonAttributes {
@@ -36,7 +36,6 @@
 </script>
 
 <button
-	use:effectRipple
 	{type}
 	class={cn(buttonVariants({ variant, size, radius, content, block }), className)}
 	{...restProps}

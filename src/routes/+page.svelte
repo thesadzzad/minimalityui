@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { effectMagnetic } from '../lib/actions/effect-magnetic.js';
+	import { effectRipple } from '../lib/actions/effect-ripple.js';
 	import Button from '../lib/components/atoms/button/button.svelte';
 
 	const variants = ['primary', 'secondary'] as const;
@@ -118,10 +119,28 @@
 			</div>
 		</section>
 
-		<section class="border-y border-secondary-border py-12 sm:py-16">
+		<section class="border-t border-secondary-border py-12 sm:py-16">
 			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
 				<div>
 					<p class="m-0 text-xs tracking-widest text-secondary uppercase">06</p>
+					<h2 class="mt-3 text-lg font-medium">Ripple effect</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">Press buttons to trigger ripple.</p>
+				</div>
+				<div class="flex flex-wrap items-center gap-3">
+					<span class="inline-flex rounded-full text-primary-foreground" use:effectRipple>
+						<Button>Primary ripple</Button>
+					</span>
+					<span class="inline-flex rounded-full text-secondary-foreground" use:effectRipple>
+						<Button variant="secondary">Secondary ripple</Button>
+					</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="border-y border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">07</p>
 					<h2 class="mt-3 text-lg font-medium">States</h2>
 				</div>
 				<div class="flex flex-wrap items-center gap-3">
