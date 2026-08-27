@@ -1,5 +1,5 @@
+import { animate, eases, type JSAnimation } from 'animejs';
 import type { Action } from 'svelte/action';
-import { cubicInOut } from 'svelte/easing';
 
 export interface MagneticOptions {
 	strength?: number;
@@ -15,9 +15,7 @@ interface Bounds {
 	height: number;
 }
 
-const MOVE_FACTOR = cubicInOut(0.42);
-const RESET_FACTOR = cubicInOut(0.3);
-const REST_THRESHOLD = 0.02;
+const RESET_DURATION = 260;
 
 export const effectMagnetic: Action<HTMLElement, MagneticOptions | undefined> = (
 	node,
@@ -26,58 +24,50 @@ export const effectMagnetic: Action<HTMLElement, MagneticOptions | undefined> = 
 	let strength = options.strength ?? 0.45;
 	let maxDistance = options.maxDistance ?? 20;
 	let bounds: Bounds | undefined;
-	let frame: number | undefined;
-	let currentX = 0;
-	let currentY = 0;
-	let targetX = 0;
-	let targetY = 0;
-	let tracking = false;
+	let resetAnimation: JSAnimation | undefined;
+	const position = { x: 0, y: 0 };
 	const initialTranslate = node.style.translate;
-	const initialTransition = node.style.transition;
-
-	node.style.transition = 'none';
 
 	function render() {
-		const factor = tracking ? MOVE_FACTOR : RESET_FACTOR;
-		currentX += (targetX - currentX) * factor;
-		currentY += (targetY - currentY) * factor;
-
-		const atRest =
-			Math.abs(targetX - currentX) < REST_THRESHOLD &&
-			Math.abs(targetY - currentY) < REST_THRESHOLD;
-
-		if (atRest) {
-			currentX = targetX;
-			currentY = targetY;
-		}
-
-		node.style.translate = `${currentX}px ${currentY}px`;
-		frame = atRest ? undefined : requestAnimationFrame(render);
-	}
-
-	function requestRender() {
-		if (frame === undefined) frame = requestAnimationFrame(render);
+		node.style.translate = `${position.x}px ${position.y}px`;
 	}
 
 	function stopTracking() {
-		tracking = false;
+		if (!bounds) return;
+
 		bounds = undefined;
-		targetX = 0;
-		targetY = 0;
 		window.removeEventListener('pointermove', track);
-		requestRender();
+		resetAnimation?.pause();
+
+		const animation = animate(position, {
+			x: 0,
+			y: 0,
+			duration: RESET_DURATION,
+			ease: eases.inOutCubic,
+			onRender: render,
+			onComplete: () => {
+				if (resetAnimation === animation) resetAnimation = undefined;
+			}
+		});
+		resetAnimation = animation;
 	}
 
 	function track(event: PointerEvent) {
 		if (!bounds) return;
 
-		const isInside =
+		const visualBounds = node.getBoundingClientRect();
+		const isInsideOrigin =
 			event.clientX >= bounds.left &&
 			event.clientX <= bounds.right &&
 			event.clientY >= bounds.top &&
 			event.clientY <= bounds.bottom;
+		const isInsideVisual =
+			event.clientX >= visualBounds.left &&
+			event.clientX <= visualBounds.right &&
+			event.clientY >= visualBounds.top &&
+			event.clientY <= visualBounds.bottom;
 
-		if (!isInside) {
+		if (!isInsideOrigin && !isInsideVisual) {
 			stopTracking();
 			return;
 		}
@@ -87,25 +77,27 @@ export const effectMagnetic: Action<HTMLElement, MagneticOptions | undefined> = 
 		const distance = Math.hypot(offsetX, offsetY);
 		const scale = distance > maxDistance ? maxDistance / distance : 1;
 
-		targetX = offsetX * scale;
-		targetY = offsetY * scale;
-		requestRender();
+		position.x = offsetX * scale;
+		position.y = offsetY * scale;
+		render();
 	}
 
 	function startTracking(event: PointerEvent) {
 		if (event.pointerType === 'touch' || node.matches(':disabled')) return;
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+		resetAnimation?.pause();
+		resetAnimation = undefined;
+
 		const rect = node.getBoundingClientRect();
 		bounds = {
-			left: rect.left - currentX,
-			right: rect.right - currentX,
-			top: rect.top - currentY,
-			bottom: rect.bottom - currentY,
+			left: rect.left - position.x,
+			right: rect.right - position.x,
+			top: rect.top - position.y,
+			bottom: rect.bottom - position.y,
 			width: rect.width,
 			height: rect.height
 		};
-		tracking = true;
 		window.addEventListener('pointermove', track);
 		track(event);
 	}
@@ -119,12 +111,11 @@ export const effectMagnetic: Action<HTMLElement, MagneticOptions | undefined> = 
 			maxDistance = nextOptions.maxDistance ?? 20;
 		},
 		destroy() {
-			if (frame !== undefined) cancelAnimationFrame(frame);
+			resetAnimation?.pause();
 			window.removeEventListener('pointermove', track);
 			node.removeEventListener('pointerenter', startTracking);
 			node.removeEventListener('blur', stopTracking);
 			node.style.translate = initialTranslate;
-			node.style.transition = initialTransition;
 		}
 	};
 };
