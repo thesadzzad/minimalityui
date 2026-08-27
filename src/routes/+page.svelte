@@ -2,10 +2,15 @@
 	import { effectMagnetic } from '../lib/actions/effect-magnetic.js';
 	import { effectRipple } from '../lib/actions/effect-ripple.js';
 	import Button from '../lib/components/atoms/button/button.svelte';
+	import Switch from '../lib/components/atoms/switch/switch.svelte';
 
 	const variants = ['primary', 'secondary', 'destructive'] as const;
 	const sizes = ['sm', 'md', 'lg'] as const;
 	const radii = ['none', 'sm', 'md', 'lg', 'pill'] as const;
+	const switchSizes = ['sm', 'md', 'lg'] as const;
+
+	let notifications = $state(true);
+	let sounds = $state(false);
 </script>
 
 <svelte:head>
@@ -137,7 +142,7 @@
 			</div>
 		</section>
 
-		<section class="border-y border-secondary-border py-12 sm:py-16">
+		<section class="border-t border-secondary-border py-12 sm:py-16">
 			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
 				<div>
 					<p class="m-0 text-xs tracking-widest text-secondary uppercase">07</p>
@@ -149,6 +154,58 @@
 					<Button variant="secondary">Secondary</Button>
 					<Button variant="secondary" disabled>Disabled</Button>
 					<Button variant="destructive">Delete</Button>
+				</div>
+			</div>
+		</section>
+
+		<section class="border-y border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">08</p>
+					<h2 class="mt-3 text-lg font-medium">Switch</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Accessible toggle control with three sizes.
+					</p>
+				</div>
+				<div class="grid gap-10">
+					<div class="grid gap-5 sm:grid-cols-[8rem_1fr] sm:items-center">
+						<code class="text-xs text-secondary">sizes</code>
+						<div class="flex flex-wrap items-center gap-5">
+							{#each switchSizes as size (size)}
+								<Switch {size} checked aria-label={`${size} switch`} />
+							{/each}
+						</div>
+					</div>
+					<div class="grid gap-5 sm:grid-cols-[8rem_1fr] sm:items-start">
+						<code class="pt-1 text-xs text-secondary">settings</code>
+						<div class="grid max-w-md divide-y divide-secondary-border">
+							<label class="flex cursor-pointer items-center justify-between gap-8 py-4">
+								<span>
+									<span class="block text-sm font-medium">Notifications</span>
+									<span class="mt-1 block text-xs text-secondary"
+										>Receive updates about account activity.</span
+									>
+								</span>
+								<Switch bind:checked={notifications} aria-label="Notifications" />
+							</label>
+							<label class="flex cursor-pointer items-center justify-between gap-8 py-4">
+								<span>
+									<span class="block text-sm font-medium">Interface sounds</span>
+									<span class="mt-1 block text-xs text-secondary"
+										>Play subtle sounds for interactions.</span
+									>
+								</span>
+								<Switch bind:checked={sounds} aria-label="Interface sounds" />
+							</label>
+							<label class="flex items-center justify-between gap-8 py-4 opacity-50">
+								<span>
+									<span class="block text-sm font-medium">Unavailable</span>
+									<span class="mt-1 block text-xs text-secondary">Disabled control state.</span>
+								</span>
+								<Switch disabled aria-label="Unavailable" />
+							</label>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>

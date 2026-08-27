@@ -9,3 +9,9 @@ export {
 	type ButtonSize,
 	type ButtonVariant
 } from './components/atoms/button/button.js';
+export { default as Switch } from './components/atoms/switch/switch.svelte';
+export {
+	switchThumbVariants,
+	switchVariants,
+	type SwitchSize
+} from './components/atoms/switch/switch.js';
