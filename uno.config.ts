@@ -21,7 +21,10 @@ export default defineConfig({
 			'secondary-foreground': 'hsl(var(--secondary-foreground))',
 			'secondary-subtle': 'hsl(var(--secondary-subtle))',
 			'secondary-subtle-hover': 'hsl(var(--secondary-subtle-hover))',
-			'secondary-border': 'hsl(var(--secondary-border))'
+			'secondary-border': 'hsl(var(--secondary-border))',
+			destructive: 'hsl(var(--destructive))',
+			'destructive-hover': 'hsl(var(--destructive-hover))',
+			'destructive-foreground': 'hsl(var(--destructive-foreground))'
 		}
 	}
 });
