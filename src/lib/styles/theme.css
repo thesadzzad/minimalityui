@@ -17,6 +17,10 @@
 		--secondary-subtle: 240 5% 94%;
 		--secondary-subtle-hover: 240 5% 88%;
 		--secondary-border: 240 4% 72%;
+
+		--destructive: 0 72% 51%;
+		--destructive-hover: 0 72% 45%;
+		--destructive-foreground: 0 0% 100%;
 	}
 
 	[data-theme='dark'] {
@@ -36,5 +40,9 @@
 		--secondary-subtle: 240 6% 10%;
 		--secondary-subtle-hover: 240 5% 16%;
 		--secondary-border: 240 4% 34%;
+
+		--destructive: 0 63% 46%;
+		--destructive-hover: 0 72% 51%;
+		--destructive-foreground: 0 0% 100%;
 	}
 }

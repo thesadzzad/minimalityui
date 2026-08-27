@@ -8,7 +8,10 @@ export const buttonVariants = cva(
 			variant: {
 				primary:
 					'border border-primary bg-primary text-primary-foreground hover:border-primary-hover hover:bg-primary-hover',
-				secondary: 'bg-secondary-subtle text-foreground shadow-none hover:bg-secondary-subtle-hover'
+				secondary:
+					'bg-secondary-subtle text-foreground shadow-none hover:bg-secondary-subtle-hover',
+				destructive:
+					'border border-destructive bg-destructive text-destructive-foreground hover:border-destructive-hover hover:bg-destructive-hover'
 			},
 			size: {
 				sm: 'h-8 px-3 text-xs',

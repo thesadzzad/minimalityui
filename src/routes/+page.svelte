@@ -3,7 +3,7 @@
 	import { effectRipple } from '../lib/actions/effect-ripple.js';
 	import Button from '../lib/components/atoms/button/button.svelte';
 
-	const variants = ['primary', 'secondary'] as const;
+	const variants = ['primary', 'secondary', 'destructive'] as const;
 	const sizes = ['sm', 'md', 'lg'] as const;
 	const radii = ['none', 'sm', 'md', 'lg', 'pill'] as const;
 </script>
@@ -148,6 +148,7 @@
 					<Button disabled>Disabled</Button>
 					<Button variant="secondary">Secondary</Button>
 					<Button variant="secondary" disabled>Disabled</Button>
+					<Button variant="destructive">Delete</Button>
 				</div>
 			</div>
 		</section>
