@@ -54,9 +54,13 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
+## License
+
+MIT licensed. Keep the copyright and permission notice when copying or distributing the library.
+
 ## Publishing
 
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
+Before publishing, update the package name and version in `package.json` as needed.
 
 To publish your library to [npm](https://www.npmjs.com):
 
