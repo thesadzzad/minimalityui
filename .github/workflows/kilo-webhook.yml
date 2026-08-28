@@ -4,7 +4,7 @@ on:
   issues:
     types: [opened, edited, reopened]
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -21,15 +21,24 @@ concurrency:
 jobs:
   forward:
     runs-on: ubuntu-latest
-    # Defense-in-depth: skip issue_comment events from bots or that already carry a kilo-trace marker.
-    # Avoids the self-loop where the Cloud Agent's own comments re-trigger the webhook.
-    # The matching prompt-level guard lives in the trigger's prompt template at app.kilo.ai.
+    # Defense-in-depth cascade guard. Three skip rules:
+    #   1. issue_comment from a bot user OR with a kilo-trace marker (self-loop).
+    #   2. pull_request whose sender is a bot (Dependabot, Kilo Cloud Agent, etc.)
+    #      — bot-PRs reviewing themselves is a feedback loop and wastes credits.
+    #   3. pull_request whose head ref is a bot-managed branch (e.g. dependabot/*,
+    #      kilo-*) — same reason.
+    # The matching prompt-level guard in the trigger prompt is the second line of defense.
     if: >-
       ${{
-        github.event_name != 'issue_comment' ||
-        (
-          github.event.comment.user.type != 'Bot' &&
-          !contains(github.event.comment.body, 'kilo-trace:')
+        !(
+          (github.event_name == 'issue_comment' &&
+            (github.event.comment.user.type == 'Bot' ||
+             contains(github.event.comment.body, 'kilo-trace:')))
+          ||
+          (github.event_name == 'pull_request' &&
+            (github.event.sender.type == 'Bot' ||
+             startsWith(github.event.pull_request.head.ref, 'dependabot/') ||
+             startsWith(github.event.pull_request.head.ref, 'kilo-')))
         )
       }}
     steps:
