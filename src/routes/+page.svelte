@@ -1,3 +1,4 @@
+<!-- test: validate Kilo Code Reviews - delete after -->
 <script lang="ts">
 	import { effectMagnetic } from '../lib/actions/effect-magnetic.js';
 	import { effectRipple } from '../lib/actions/effect-ripple.js';
@@ -376,5 +377,6 @@
 		{/snippet}
 	</Modal>
 
-	<ToastStack items={toastItems} onDismiss={dismissToast} />
-</div>
+
+	<!-- test element: forces a diff for the reviewer to inspect -->
+	<button onclick={() => alert('test')} style="background: #ff0000; color: white;">Click me</button>
