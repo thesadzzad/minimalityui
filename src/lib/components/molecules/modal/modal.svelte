@@ -22,6 +22,7 @@
 	}: Props = $props();
 	let panel = $state<HTMLDivElement>();
 	let rendered = $state(open);
+	let backdropVisible = $state(false);
 	const uid = $props.id();
 	const titleId = `modal-title-${uid}`;
 
@@ -39,7 +40,14 @@
 	}
 
 	$effect(() => {
-		if (open) rendered = true;
+		if (open) {
+			rendered = true;
+			tick().then(() => {
+				if (open) backdropVisible = true;
+			});
+		} else {
+			backdropVisible = false;
+		}
 	});
 
 	$effect(() => {
@@ -67,7 +75,9 @@
 
 {#if rendered}
 	<div
-		class="fixed inset-0 z-[20000] grid place-items-center bg-background/75 p-4 backdrop-blur-sm"
+		class="fixed inset-0 z-[20000] grid place-items-center bg-background/75 p-4 transition-[opacity,backdrop-filter] duration-[380ms] ease-[cubic-bezier(0.65,0,0.35,1)] {backdropVisible
+			? 'opacity-100 backdrop-blur-sm'
+			: 'opacity-0 backdrop-blur-0'}"
 		role="presentation"
 		onclick={(event) => event.target === event.currentTarget && closeOnBackdrop && close()}
 	>
