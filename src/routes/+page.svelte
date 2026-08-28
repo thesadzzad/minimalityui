@@ -375,6 +375,5 @@
 			<Button onclick={() => (modalOpen = false)}>Create project</Button>
 		{/snippet}
 	</Modal>
-
 	<ToastStack items={toastItems} onDismiss={dismissToast} />
 </div>
