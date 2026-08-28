@@ -7,8 +7,9 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   issue_comment:
     types: [created]
+  push:
+    branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
   issues: read
@@ -61,6 +62,11 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
           COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
           COMMENT_ASSOC: ${{ github.event.comment.author_association }}
+          PUSH_REF: ${{ github.event.ref }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.event.after }}
+          PUSH_PUSHER: ${{ github.event.pusher.name }}
+          PUSH_COMMITS: ${{ toJson(github.event.commits) }}
         run: |
           if [ -z "$KILO_WEBHOOK_URL" ]; then
             echo "::error::KILO_WEBHOOK_URL secret is not set"
@@ -84,6 +90,11 @@ jobs:
             --arg comment_body "$COMMENT_BODY" \
             --arg comment_author "$COMMENT_AUTHOR" \
             --arg comment_assoc "$COMMENT_ASSOC" \
+            --arg push_ref "$PUSH_REF" \
+            --arg push_before "$PUSH_BEFORE" \
+            --arg push_after "$PUSH_AFTER" \
+            --arg push_pusher "$PUSH_PUSHER" \
+            --arg push_commits "$PUSH_COMMITS" \
             '{
               event: $event,
               action: $action,
@@ -91,7 +102,8 @@ jobs:
               sender: $sender,
               issue: (if $issue_number != "" then { number: ($issue_number | tonumber), title: $issue_title, body: $issue_body } else null end),
               pull_request: (if $pr_number != "" then { number: ($pr_number | tonumber), title: $pr_title, body: $pr_body, base: $pr_base, head: $pr_head, url: $pr_url } else null end),
-              comment: (if $comment_body != "" then { body: $comment_body, author: $comment_author, author_association: $comment_assoc } else null end)
+              comment: (if $comment_body != "" then { body: $comment_body, author: $comment_author, author_association: $comment_assoc } else null end),
+              push: (if $push_ref != "" then { ref: $push_ref, before: $push_before, after: $push_after, pusher: $push_pusher, commits: ($push_commits | fromjson) } else null end)
             }')
 
           curl --fail-with-body --silent --show-error --retry 3 --retry-delay 2 \
