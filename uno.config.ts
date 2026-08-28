@@ -26,7 +26,15 @@ export default defineConfig({
 			'secondary-border': 'hsl(var(--secondary-border))',
 			destructive: 'hsl(var(--destructive))',
 			'destructive-hover': 'hsl(var(--destructive-hover))',
-			'destructive-foreground': 'hsl(var(--destructive-foreground))'
+			'destructive-foreground': 'hsl(var(--destructive-foreground))',
+			'destructive-subtle': 'hsl(var(--destructive-subtle))',
+			'destructive-subtle-foreground': 'hsl(var(--destructive-subtle-foreground))',
+			'info-subtle': 'hsl(var(--info-subtle))',
+			'info-subtle-foreground': 'hsl(var(--info-subtle-foreground))',
+			'warning-subtle': 'hsl(var(--warning-subtle))',
+			'warning-subtle-foreground': 'hsl(var(--warning-subtle-foreground))',
+			'success-subtle': 'hsl(var(--success-subtle))',
+			'success-subtle-foreground': 'hsl(var(--success-subtle-foreground))'
 		}
 	}
 });

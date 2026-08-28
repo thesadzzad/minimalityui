@@ -23,6 +23,20 @@
 		--destructive: 0 72% 51%;
 		--destructive-hover: 0 72% 45%;
 		--destructive-foreground: 0 0% 100%;
+		--destructive-subtle: 0 86% 95%;
+		--destructive-subtle-foreground: 0 72% 38%;
+
+		--info-subtle: 210 100% 96%;
+		--info-subtle-foreground: 221 83% 35%;
+		--warning-subtle: 45 100% 94%;
+		--warning-subtle-foreground: 32 95% 30%;
+		--success-subtle: 142 60% 94%;
+		--success-subtle-foreground: 142 72% 25%;
+
+		--scrollbar-track: hsl(var(--background));
+		--scrollbar-thumb: 240 5% 86%;
+		--scrollbar-thumb-hover: 240 5% 72%;
+		--scrollbar-size: 8px;
 	}
 
 	[data-theme='dark'] {
@@ -48,5 +62,64 @@
 		--destructive: 0 63% 46%;
 		--destructive-hover: 0 72% 51%;
 		--destructive-foreground: 0 0% 100%;
+		--destructive-subtle: 0 48% 16%;
+		--destructive-subtle-foreground: 0 91% 75%;
+
+		--info-subtle: 217 50% 16%;
+		--info-subtle-foreground: 213 94% 75%;
+		--warning-subtle: 32 55% 16%;
+		--warning-subtle-foreground: 45 96% 65%;
+		--success-subtle: 142 45% 14%;
+		--success-subtle-foreground: 142 69% 65%;
+
+		--scrollbar-track: hsl(var(--background));
+		--scrollbar-thumb: 240 5% 16%;
+		--scrollbar-thumb-hover: 240 4% 28%;
+		--scrollbar-size: 8px;
+	}
+
+	body:has([data-theme='dark']) {
+		--scrollbar-track: hsl(240 10% 4%);
+		--scrollbar-thumb: 240 5% 16%;
+		--scrollbar-thumb-hover: 240 4% 28%;
+	}
+
+	html {
+		scrollbar-gutter: auto;
+	}
+
+	@supports (overflow: overlay) {
+		html {
+			overflow-y: overlay;
+		}
+	}
+
+	body::-webkit-scrollbar {
+		width: var(--scrollbar-size);
+		height: var(--scrollbar-size);
+	}
+
+	body::-webkit-scrollbar-track {
+		border-radius: 0px;
+		background: var(--scrollbar-track);
+	}
+
+	body::-webkit-scrollbar-thumb {
+		border: 1px solid transparent;
+		border-radius: 1px;
+		background: hsl(var(--scrollbar-thumb));
+		background-clip: content-box;
+	}
+
+	body::-webkit-scrollbar-thumb:hover {
+		background: hsl(var(--scrollbar-thumb-hover));
+		background-clip: content-box;
+	}
+
+	@supports not selector(::-webkit-scrollbar) {
+		body {
+			scrollbar-color: hsl(var(--scrollbar-thumb)) var(--scrollbar-track);
+			scrollbar-width: thin;
+		}
 	}
 }
