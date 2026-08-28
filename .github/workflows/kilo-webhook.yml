@@ -21,6 +21,17 @@ concurrency:
 jobs:
   forward:
     runs-on: ubuntu-latest
+    # Defense-in-depth: skip issue_comment events from bots or that already carry a kilo-trace marker.
+    # Avoids the self-loop where the Cloud Agent's own comments re-trigger the webhook.
+    # The matching prompt-level guard lives in the trigger's prompt template at app.kilo.ai.
+    if: >-
+      ${{
+        github.event_name != 'issue_comment' ||
+        (
+          github.event.comment.user.type != 'Bot' &&
+          !contains(github.event.comment.body, 'kilo-trace:')
+        )
+      }}
     steps:
       - name: forward event to kilo webhook
         env:
