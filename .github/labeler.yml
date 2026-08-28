@@ -1,0 +1,36 @@
+components:
+  - changed-files:
+      - any-glob-to-any-file: src/lib/components/**
+
+actions:
+  - changed-files:
+      - any-glob-to-any-file: src/lib/actions/**
+
+theme:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/lib/styles/**
+          - uno.config.ts
+
+showcase:
+  - changed-files:
+      - any-glob-to-any-file: src/routes/**
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - docs/**
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - package.json
+          - package-lock.json
+
+github-actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/dependabot.yml
+          - .github/labeler.yml

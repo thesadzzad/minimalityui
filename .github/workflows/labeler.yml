@@ -1,0 +1,52 @@
+name: Pull Request Labeler
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  label:
+    name: Label changed areas
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Ensure labels exist
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const definitions = {
+              components: ['5319e7', 'Component changes'],
+              actions: ['1d76db', 'Svelte action changes'],
+              theme: ['c5def5', 'Theme and styling changes'],
+              showcase: ['bfdadc', 'Showcase application changes'],
+              documentation: ['0075ca', 'Documentation changes'],
+              dependencies: ['0366d6', 'Dependency changes'],
+              'github-actions': ['2088ff', 'GitHub automation changes']
+            };
+            const { owner, repo } = context.repo;
+            for (const [name, [color, description]] of Object.entries(definitions)) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name,
+                  color,
+                  description
+                });
+              }
+            }
+
+      - name: Apply labels
+        uses: actions/labeler@v6
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: true
