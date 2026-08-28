@@ -3,6 +3,8 @@
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 240 10% 4%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 240 10% 4%;
 
 		--primary: 240 10% 4%;
 		--primary-hover: 240 6% 12%;
@@ -26,6 +28,8 @@
 	[data-theme='dark'] {
 		--background: 240 10% 4%;
 		--foreground: 0 0% 98%;
+		--popover: 240 6% 10%;
+		--popover-foreground: 0 0% 98%;
 
 		--primary: 0 0% 100%;
 		--primary-hover: 240 5% 90%;

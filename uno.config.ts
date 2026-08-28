@@ -10,6 +10,8 @@ export default defineConfig({
 		colors: {
 			background: 'hsl(var(--background))',
 			foreground: 'hsl(var(--foreground))',
+			popover: 'hsl(var(--popover))',
+			'popover-foreground': 'hsl(var(--popover-foreground))',
 			primary: 'hsl(var(--primary))',
 			'primary-hover': 'hsl(var(--primary-hover))',
 			'primary-foreground': 'hsl(var(--primary-foreground))',

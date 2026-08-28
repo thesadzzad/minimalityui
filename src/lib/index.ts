@@ -1,4 +1,9 @@
+export { effectGooey, type GooeyOptions } from './actions/effect-gooey.js';
 export { effectMagnetic, type MagneticOptions } from './actions/effect-magnetic.js';
+export { default as Modal } from './components/molecules/modal/modal.svelte';
+export { default as Popover } from './components/molecules/popover/popover.svelte';
+export { default as Toast } from './components/molecules/toast/toast.svelte';
+export { default as Tooltip } from './components/molecules/tooltip/tooltip.svelte';
 export { effectRipple } from './actions/effect-ripple.js';
 export { default as Button } from './components/atoms/button/button.svelte';
 export {

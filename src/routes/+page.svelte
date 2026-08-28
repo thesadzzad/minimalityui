@@ -5,6 +5,10 @@
 	import Checkbox from '../lib/components/atoms/checkbox/checkbox.svelte';
 	import type { CheckboxState } from '../lib/components/atoms/checkbox/checkbox.js';
 	import Switch from '../lib/components/atoms/switch/switch.svelte';
+	import Modal from '../lib/components/molecules/modal/modal.svelte';
+	import Popover from '../lib/components/molecules/popover/popover.svelte';
+	import Toast from '../lib/components/molecules/toast/toast.svelte';
+	import Tooltip from '../lib/components/molecules/tooltip/tooltip.svelte';
 
 	const variants = ['primary', 'secondary', 'destructive'] as const;
 	const sizes = ['sm', 'md', 'lg'] as const;
@@ -15,6 +19,8 @@
 	let notifications = $state(true);
 	let sounds = $state(false);
 	let termsState: CheckboxState = $state('checked');
+	let modalOpen = $state(false);
+	let toastOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -214,7 +220,7 @@
 			</div>
 		</section>
 
-		<section class="border-y border-secondary-border py-12 sm:py-16">
+		<section class="border-t border-secondary-border py-12 sm:py-16">
 			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
 				<div>
 					<p class="m-0 text-xs tracking-widest text-secondary uppercase">09</p>
@@ -246,9 +252,105 @@
 			</div>
 		</section>
 
+		<section class="border-t border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">10</p>
+					<h2 class="mt-3 text-lg font-medium">Modal</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Focused dialog with backdrop, Escape handling, and gooey surface.
+					</p>
+				</div>
+				<div class="flex items-center">
+					<Button onclick={() => (modalOpen = true)}>Open modal</Button>
+				</div>
+			</div>
+		</section>
+
+		<section class="border-t border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">11</p>
+					<h2 class="mt-3 text-lg font-medium">Popover</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Compact contextual content anchored to a trigger.
+					</p>
+				</div>
+				<div class="flex items-center py-4">
+					<Popover align="start">
+						{#snippet trigger(toggle, open)}
+							<Button variant="secondary" onclick={toggle}>{open ? 'Close' : 'Open'} popover</Button
+							>
+						{/snippet}
+						<div class="grid gap-1">
+							<p class="m-0 font-medium">Quick settings</p>
+							<p class="m-0 text-xs text-secondary">
+								Adjust preferences without leaving this page.
+							</p>
+						</div>
+					</Popover>
+				</div>
+			</div>
+		</section>
+
+		<section class="border-t border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">12</p>
+					<h2 class="mt-3 text-lg font-medium">Tooltip</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Keyboard and pointer hint with delayed reveal.
+					</p>
+				</div>
+				<div class="flex flex-wrap items-center gap-6 py-4">
+					<Tooltip text="Create a new item" placement="top">
+						{#snippet trigger(props)}
+							<Button {...props} content="icon" icon={plusIcon} aria-label="Create item" />
+						{/snippet}
+					</Tooltip>
+					<Tooltip text="More information" placement="bottom">
+						{#snippet trigger(props)}
+							<Button {...props} variant="secondary">Hover or focus</Button>
+						{/snippet}
+					</Tooltip>
+				</div>
+			</div>
+		</section>
+
+		<section class="border-y border-secondary-border py-12 sm:py-16">
+			<div class="grid gap-10 lg:grid-cols-[15rem_1fr]">
+				<div>
+					<p class="m-0 text-xs tracking-widest text-secondary uppercase">13</p>
+					<h2 class="mt-3 text-lg font-medium">Toast</h2>
+					<p class="mt-3 text-xs leading-5 text-secondary">
+						Timed status feedback with optional manual dismissal.
+					</p>
+				</div>
+				<div class="flex items-center">
+					<Button variant="secondary" onclick={() => (toastOpen = true)}>Show toast</Button>
+				</div>
+			</div>
+		</section>
+
 		<footer class="flex flex-wrap items-center justify-between gap-4 pt-8 text-xs text-secondary">
 			<p class="m-0">Minimality UI / Atoms</p>
-			<code>atoms / button · switch · checkbox</code>
+			<code>atoms · overlays · effects</code>
 		</footer>
 	</div>
 </main>
+
+<Modal bind:open={modalOpen} title="Create new project">
+	<p class="m-0">
+		Gooey-filtered surface keeps overlay motion soft while dialog semantics remain accessible.
+	</p>
+	{#snippet footer()}
+		<Button variant="secondary" onclick={() => (modalOpen = false)}>Cancel</Button>
+		<Button onclick={() => (modalOpen = false)}>Create project</Button>
+	{/snippet}
+</Modal>
+
+<Toast
+	bind:open={toastOpen}
+	title="Changes saved"
+	description="Your preferences were updated successfully."
+/>
